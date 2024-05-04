@@ -18,6 +18,9 @@ RUN apk add --no-cache --virtual .gyp \
     && pnpm install \
     && apk del .gyp
 
+# Instala dotenv
+RUN npm install dotenv
+
 FROM node:21-alpine3.18 as deploy
 
 WORKDIR /app

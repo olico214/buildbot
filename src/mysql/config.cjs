@@ -1,4 +1,4 @@
-var mysql = require('mysql2');
+var mysql = require('/node_modules/mysql2');
 
 let pool;
 

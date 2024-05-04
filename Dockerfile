@@ -22,7 +22,9 @@ RUN apk add --no-cache --virtual .gyp \
     && apk add --no-cache git \
     && pnpm install \
     && apk del .gyp \
-    && && npm install --save mysql2
+    && npm install --save mysql2 \
+    && npm install axios
+
 
 # Etapa de despliegue
 FROM node:21-alpine3.18 as deploy

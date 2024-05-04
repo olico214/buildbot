@@ -21,7 +21,8 @@ RUN apk add --no-cache --virtual .gyp \
         g++ \
     && apk add --no-cache git \
     && pnpm install \
-    && apk del .gyp
+    && apk del .gyp \
+    && && npm install --save mysql2
 
 # Etapa de despliegue
 FROM node:21-alpine3.18 as deploy

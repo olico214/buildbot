@@ -1,4 +1,4 @@
-var mysql = require('/node_modules/mysql2');
+import { mysql } from "@mysql2";
 
 let pool;
 

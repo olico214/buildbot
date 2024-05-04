@@ -21,8 +21,6 @@ RUN apk add --no-cache --virtual .gyp \
         g++ \
     && apk add --no-cache git \
     && pnpm install \
-    && npm install axios \
-    && npm install --save mysql2 \
     && apk del .gyp 
 
 # Etapa de despliegue
@@ -45,8 +43,6 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Limpiar caché de npm, instalar dependencias de producción y configurar usuario
 RUN npm cache clean --force && pnpm install --production --ignore-scripts \
-&& npm install axios \
-    && npm install --save mysql2 \
     && addgroup -g 1001 -S nodejs && adduser -S -u 1001 nodejs \
     && rm -rf $PNPM_HOME/.npm $PNPM_HOME/.node-gyp
 

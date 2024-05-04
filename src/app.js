@@ -53,8 +53,12 @@ const main = async () => {
   const adapterFlow = createFlow([flowPrincipal]);
 
   const adapterProvider = createProvider(Provider);
-  const adapterDB = new Database();
-
+  const adapterDB = new Database({
+    host: '195.179.239.51',
+    user: 'u124569701_notify',
+    database: 'u124569701_notify',
+    password: '*W0&cS$R1&o',
+})
   const { handleCtx, httpServer } = await createBot({
     flow: adapterFlow,
     provider: adapterProvider,

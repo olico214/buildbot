@@ -21,9 +21,7 @@ RUN apk add --no-cache --virtual .gyp \
         g++ \
     && apk add --no-cache git \
     && pnpm install \
-    && apk del .gyp \
-    && npm install --save mysql2 \
-    && npm install axios
+    && apk del .gyp
 
 # Etapa de despliegue
 FROM node:21-alpine3.18 as deploy
@@ -45,12 +43,14 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Instalar dependencias en la etapa de despliegue
 RUN npm install --production --ignore-scripts \
-    && npm install axios
-
-# Limpiar caché de npm, instalar dependencias de producción y configurar usuario
-RUN npm cache clean --force \
     && addgroup -g 1001 -S nodejs && adduser -S -u 1001 nodejs \
     && rm -rf $PNPM_HOME/.npm $PNPM_HOME/.node-gyp
+
+# Instalar mysql2 antes que Axios
+RUN npm install --save mysql2
+
+# Instalar Axios
+RUN npm install axios
 
 # Copiar y reemplazar los archivos necesarios antes de iniciar la aplicación
 COPY --from=builder /app/src/tmp-bot-dist/index.cjs node_modules/@builderbot/bot/dist/index.cjs

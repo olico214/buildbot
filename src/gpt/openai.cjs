@@ -44,17 +44,27 @@ console.log(formattedMessages)
       ]
     };
 
-    // Make request to OpenAI API
-    const response = await axios.post(
-      'https://api.openai.com/v1/chat/completions',
-      requestData,
-      {
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${OPENAI_API_KEY}`
-        }
+        },
+        body: JSON.stringify(requestData)
+      });
+    
+      if (response.ok) {
+        const responseData = await response.json();
+        // Hacer algo con la respuesta
+      } else {
+        console.error('Error al enviar la solicitud:', response.status);
+        // Manejar el error
       }
-    );
+    } catch (error) {
+      console.error('Error al enviar la solicitud:', error.message);
+      // Manejar el error
+    }
 
     // Extract and return response
     const generatedMessage = response.data.choices[0].message;

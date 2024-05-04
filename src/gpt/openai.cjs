@@ -1,8 +1,9 @@
+require('dotenv').config();
 
-
-const OPENAI_API_KEY = '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'
+const axios = require('axios');
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const pool = require("../mysql/config.cjs");
-const id = 1
+const id = process.env.id
 
 async function getData() {
 
@@ -44,28 +45,21 @@ console.log(formattedMessages)
       ]
     };
 
-    try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
+    // Make request to OpenAI API
+    const response = await axios.post(
+      'https://api.openai.com/v1/chat/completions',
+      requestData,
+      {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${OPENAI_API_KEY}`
-        },
-        body: JSON.stringify(requestData)
-      });
-    
-      if (!response.ok) {
-        throw new Error('Error al enviar el mensaje a OpenAI');
+        }
       }
-    
-      const responseData = await response.json();
-      const generatedMessage = responseData.choices[0].message;
-      return generatedMessage;
-    } catch (error) {
-      console.error('Error al enviar el mensaje a OpenAI:', error);
-      return 'Lo siento, no puedo responder en este momento.';
-    }
-    
+    );
+
+    // Extract and return response
+    const generatedMessage = response.data.choices[0].message;
+    return generatedMessage;
     
   } catch (error) {
     console.error('Error sending message to OpenAI:', error);

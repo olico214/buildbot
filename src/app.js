@@ -24,30 +24,13 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
   async (ctx, { flowDynamic, state }) => {
     const mensaje = ctx.body;
     await insertValues(mensaje,'Incoming',ctx.from)
-    // Obtener el estado actual
-    const estado = await state.getMyState();
-    let mensajes = [];
 
-    if (estado) {
-      // Si hay un estado anterior, agregar los mensajes anteriores
-      mensajes = estado.mensajes;
-    }
-
-    // Agregar el nuevo mensaje al array de mensajes
-    mensajes.push({
-      role: "user",
-      content: mensaje,
-    });
-
-    if (mensajes.length > 5) {
-      mensajes.shift();
-    }
-
+   // Actualizar el estado con los mensajes acumulados y la respuesta generada
+   const data = { mensajes: mensajes, phone:ctx.from }
     // Obtener la respuesta de OpenAI con el contexto acumulado
-    const respuesta = await gpt(mensajes);
+    const respuesta = await gpt(data);
 
-    // Actualizar el estado con los mensajes acumulados y la respuesta generada
-    await state.update({ mensajes: mensajes, respuesta: respuesta });
+    
 
 
     await insertValues(respuesta.content,'Outgoing',ctx.from)

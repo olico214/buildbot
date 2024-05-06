@@ -23,17 +23,29 @@ async function getData() {
 }
 
 
-async function gpt(messages) {
-  const ctx = await getData()
 
+async function fetchCtx(phone) {
+  const connection = await pool.getConnection();
+  try {
+    const sql = `select * from history where phone =  ? limit 6`;
+
+    const [result, fields] = await connection.query(sql, [phone]);
+   
+    return  result
+  } catch (err) {
+      console.log(err);
+  } finally {
+      connection.release();
+  }
+}
+
+async function gpt(data) {
+  const ctx = await getData()
+  const retrieveMessages = await fetchCtx(data.phone)
+console.log(retrieveMessages)
   try {
 
-    const formattedMessages = messages.map(user => ({
-      role: user.role,
-      content: user.content
-    }));
-
-console.log(formattedMessages)
+    
     const requestData = {
       model: "gpt-3.5-turbo",
       messages: [
@@ -41,7 +53,7 @@ console.log(formattedMessages)
           role: "system",
           content: ctx[0].contexto
         },
-        ...formattedMessages 
+        retrieveMessages
       ]
     };
 

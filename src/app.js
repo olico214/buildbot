@@ -26,7 +26,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
     await insertValues(mensaje,'Incoming',ctx.from)
 
    // Actualizar el estado con los mensajes acumulados y la respuesta generada
-   const data = { mensajes: mensajes, phone:ctx.from }
+   const data = { mensajes: mensaje, phone:ctx.from }
     
     const respuesta = await gpt(data);
 

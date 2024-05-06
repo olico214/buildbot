@@ -50,7 +50,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
     await state.update({ mensajes: mensajes, respuesta: respuesta });
 
 
-    await insertValues(respuesta,'Outgoing',ctx.from)
+    await insertValues(respuesta.content,'Outgoing',ctx.from)
 
     // Devolver la respuesta al flujo dinámico
     return await flowDynamic(respuesta.content);

@@ -11,7 +11,7 @@ import { MemoryDB as Database } from "@builderbot/bot";
 import { BaileysProvider as Provider } from "@builderbot/provider-baileys";
 import { EVENTS } from "@builderbot/bot";
 import { gpt } from "./gpt/openai.cjs";
-import {insertValues} from "./mysql/config.cjs"
+import {insertValues} from "./mysql/saveData.cjs"
 
 
 const PORT = process.env.PORT ?? 3008;

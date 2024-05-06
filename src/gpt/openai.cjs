@@ -32,7 +32,7 @@ async function fetchCtx(phone) {
 
     const [result, fields] = await connection.query(sql, [phone]);
    
-    return  result.data
+    return  result
   } catch (err) {
       console.log(err);
   } finally {

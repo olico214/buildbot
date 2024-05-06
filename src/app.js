@@ -33,10 +33,10 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
     
 
 
-    await insertValues(respuesta.content,'Outgoing',ctx.from)
+    await insertValues(respuesta,'Outgoing',ctx.from)
 
     // Devolver la respuesta al flujo dinámico
-    return await flowDynamic(respuesta.content);
+    return await flowDynamic(respuesta);
   }
 );
 

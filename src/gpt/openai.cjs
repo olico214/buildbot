@@ -71,7 +71,7 @@ console.log(retrieveMessages)
     );
 
     // Extract and return response
-    const generatedMessage = response.data.choices[0].message;
+    const generatedMessage = response.data.choices[0].message.content;
     return generatedMessage;
     
   } catch (error) {

@@ -11,14 +11,33 @@ import { MemoryDB as Database } from "@builderbot/bot";
 import { BaileysProvider as Provider } from "@builderbot/provider-baileys";
 import { EVENTS } from "@builderbot/bot";
 import { gpt } from "./gpt/openai.cjs";
+import { OutgoingMessage } from "http";
 
 const PORT = process.env.PORT ?? 3008;
+
+
+async function insertValues(message, input, phone) {
+  const connection = await pool.getConnection();
+  try {
+      const sql = `INSERT INTO history (message, date, input, phone) VALUES (?, NOW(), ?, ?)`;
+      const values = [message, input, phone];
+      const [result, fields] = await connection.query(sql, values);
+      
+      // Si necesitas el resultado de la inserción por alguna razón, puedes retornarlo.
+      return result;
+  } catch (err) {
+      console.log(err);
+  } finally {
+      connection.release();
+  }
+}
+
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
   { capture: false },
   async (ctx, { flowDynamic, state }) => {
     const mensaje = ctx.body;
-
+    await insertValues(mensaje,'Incoming',ctx.from)
     // Obtener el estado actual
     const estado = await state.getMyState();
     let mensajes = [];
@@ -43,6 +62,9 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
 
     // Actualizar el estado con los mensajes acumulados y la respuesta generada
     await state.update({ mensajes: mensajes, respuesta: respuesta });
+
+
+    await insertValues(respuesta,'Outgoing',ctx.from)
 
     // Devolver la respuesta al flujo dinámico
     return await flowDynamic(respuesta.content);

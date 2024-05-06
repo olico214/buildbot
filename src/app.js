@@ -27,7 +27,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
 
    // Actualizar el estado con los mensajes acumulados y la respuesta generada
    const data = { mensajes: mensajes, phone:ctx.from }
-    // Obtener la respuesta de OpenAI con el contexto acumulado
+    
     const respuesta = await gpt(data);
 
     

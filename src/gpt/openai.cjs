@@ -44,6 +44,7 @@ async function gpt(data) {
   const ctx = await getData()
   const retrieveMessages = await fetchCtx(data.phone)
   const mensajes = retrieveMessages[0]
+  console.log(mensajes)
   try {
 
     

@@ -1,4 +1,5 @@
 const pool = require("./mysql/config.cjs");
+
 async function insertValues(message, input, phone) {
     const connection = await pool.getConnection();
     try {
@@ -14,4 +15,4 @@ async function insertValues(message, input, phone) {
         connection.release();
     }
   }
-  
+  module.exports = { insertValues };

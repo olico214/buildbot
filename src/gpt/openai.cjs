@@ -28,7 +28,7 @@ async function fetchCtx(phone) {
   const connection = await pool.getConnection();
   
   try {
-    const sql = `select * from history where phone =  ? limit 6`;
+    const sql = `select role,content from history where phone =  ? limit 6`;
 
     const [result, fields] = await connection.query(sql, [phone]);
    

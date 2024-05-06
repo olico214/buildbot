@@ -44,7 +44,13 @@ async function gpt(data) {
   const ctx = await getData()
   const retrieveMessages = await fetchCtx(data.phone)
   const mensajes = retrieveMessages
-  console.log(mensajes)
+// Crear un nuevo array con la estructura deseada
+  const nuevoArray = mensajes.map(mensaje => {
+    return {
+        role: mensaje.role,
+        content: mensaje.content
+    };
+  });
   try {
 
     
@@ -55,7 +61,7 @@ async function gpt(data) {
           role: "system",
           content: ctx[0].contexto
         },
-        mensajes
+        nuevoArray
       ]
     };
 

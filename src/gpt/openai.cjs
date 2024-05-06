@@ -60,7 +60,7 @@ async function gpt(data) {
       messages: [
         {
           role: "system",
-          content: ctx[0].contexto
+          content: `nombre: ${ctx[0].name}, personalidad: ${ctx[0].personality}, contexto: ${ctx[0].contexto} ` 
         },
         ...nuevoArray
       ]

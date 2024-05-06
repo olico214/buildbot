@@ -30,13 +30,14 @@ async function fetchCtx(phone) {
   try {
     const sql = `SELECT role, content
     FROM (
-        SELECT role, content
+        SELECT role, content, date
         FROM history
         WHERE phone = ?
-        ORDER BY id DESC
+        ORDER BY date DESC
         LIMIT 6
     ) AS subquery
-    ORDER BY id ASC;`;
+    ORDER BY date ASC;
+    `;
 
     const [result, fields] = await connection.query(sql, [phone]);
    

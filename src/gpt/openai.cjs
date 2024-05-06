@@ -75,7 +75,7 @@ console.log(retrieveMessages)
     return generatedMessage;
     
   } catch (error) {
-    console.error('Error sending message to OpenAI:', error);
+    // console.error('Error sending message to OpenAI:', error);
     return 'Lo siento, no puedo responder en este momento.';
   }
 }

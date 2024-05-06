@@ -53,8 +53,7 @@ async function gpt(data) {
   });
   try {
 
-      console.log(nuevoArray)
-    
+
     const requestData = {
       model: "gpt-3.5-turbo",
       messages: [

@@ -28,7 +28,15 @@ async function fetchCtx(phone) {
   const connection = await pool.getConnection();
   
   try {
-    const sql = `select role,content from history where phone =  ? ORDER BY id  desc limit 6`;
+    const sql = `SELECT role, content
+    FROM (
+        SELECT role, content
+        FROM history
+        WHERE phone = ?
+        ORDER BY id DESC
+        LIMIT 6
+    ) AS subquery
+    ORDER BY id ASC;`;
 
     const [result, fields] = await connection.query(sql, [phone]);
    

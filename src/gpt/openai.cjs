@@ -26,13 +26,13 @@ async function getData() {
 
 async function fetchCtx(phone) {
   const connection = await pool.getConnection();
-  console.log(phone)
+  
   try {
     const sql = `select * from history where phone =  ? limit 6`;
 
     const [result, fields] = await connection.query(sql, [phone]);
-   console.log(result)
-    return  result
+   
+    return  result.data
   } catch (err) {
       console.log(err);
   } finally {

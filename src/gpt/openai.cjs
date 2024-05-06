@@ -43,7 +43,7 @@ async function fetchCtx(phone) {
 async function gpt(data) {
   const ctx = await getData()
   const retrieveMessages = await fetchCtx(data.phone)
-console.log(retrieveMessages)
+  const mensajes = retrieveMessages[0]
   try {
 
     
@@ -54,7 +54,7 @@ console.log(retrieveMessages)
           role: "system",
           content: ctx[0].contexto
         },
-        retrieveMessages
+        mensajes
       ]
     };
 

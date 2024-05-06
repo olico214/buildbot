@@ -1,10 +1,10 @@
 const pool = require("./config.cjs");
 
-async function insertValues(message, input, phone) {
+async function insertValues(message, role, phone,tipo) {
     const connection = await pool.getConnection();
     try {
-        const sql = `INSERT INTO history (message, date, input, phone) VALUES (?, NOW(), ?, ?)`;
-        const values = [message, input, phone];
+        const sql = `INSERT INTO history (content, date, role, phone,type) VALUES (?, NOW(), ?, ?, ?)`;
+        const values = [message, role, phone, tipo];
         const [result, fields] = await connection.query(sql, values);
         
         // Si necesitas el resultado de la inserción por alguna razón, puedes retornarlo.

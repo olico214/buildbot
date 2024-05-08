@@ -80,7 +80,7 @@ async function gpt(data) {
     return false
   }
 
-  const getstopped = await fecthResponse(phone)
+  const getstopped = await fecthResponse(data.phone)
   
   if(!getstopped){
     return false

@@ -77,7 +77,7 @@ async function gpt(data) {
   const ctx = await getData()
 
   console.log(ctx)
-  if(ctx.connected == '1'){
+  if(ctx[0].connected == 1){
     return false
   }
 

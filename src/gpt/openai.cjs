@@ -76,7 +76,7 @@ async function fecthResponse(phone, id) {
 async function gpt(data) {
   const ctx = await getData()
 
-  console.log(ctx)
+
   if(ctx[0].connected == 1){
     return false
   }

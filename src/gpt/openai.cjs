@@ -86,6 +86,12 @@ async function gpt(data) {
   if(!getstopped){
     return false
   }
+
+  const delay = ctx.delay; 
+
+  await new Promise(resolve => setTimeout(resolve, delay * 1000));
+
+  console.log(delay)
   const retrieveMessages = await fetchCtx(data.phone)
   const mensajes = retrieveMessages
 // Crear un nuevo array con la estructura deseada

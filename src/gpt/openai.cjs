@@ -49,8 +49,42 @@ async function fetchCtx(phone) {
   }
 }
 
+
+
+async function fecthResponse(phone, id) {
+  const connection = await pool.getConnection();
+  
+  try {
+    const sql = `SELECT * FROM responseBot WHERE phone = ? AND iduser = ?`;
+
+    const [result, fields] = await connection.query(sql, [phone, id]);
+   
+    if (result.length === 0) {
+      return true;
+    }
+    
+    return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  } finally {
+    connection.release();
+  }
+}
+
+
 async function gpt(data) {
   const ctx = await getData()
+
+  if(ctx.connected == 1){
+    return false
+  }
+
+  const getstopped = await fecthResponse(phone)
+  
+  if(!getstopped){
+    return false
+  }
   const retrieveMessages = await fetchCtx(data.phone)
   const mensajes = retrieveMessages
 // Crear un nuevo array con la estructura deseada

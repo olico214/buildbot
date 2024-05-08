@@ -30,7 +30,9 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
     
     const respuesta = await gpt(data);
 
-    
+    if (!respuesta){
+      return
+    }
 
 
     await insertValues(respuesta,'assistant',ctx.from,'ia')

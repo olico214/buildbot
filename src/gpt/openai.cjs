@@ -87,7 +87,7 @@ async function gpt(data) {
     return false
   }
 
-  const delay = ctx.delay; 
+  const delay = ctx[0].delay; 
 
   await new Promise(resolve => setTimeout(resolve, delay * 1000));
 

@@ -91,7 +91,7 @@ async function gpt(data) {
 
   await new Promise(resolve => setTimeout(resolve, delay * 1000));
 
-  console.log(delay)
+
   const retrieveMessages = await fetchCtx(data.phone)
   const mensajes = retrieveMessages
 // Crear un nuevo array con la estructura deseada
@@ -103,7 +103,7 @@ async function gpt(data) {
   });
   try {
 
-      console.log(nuevoArray)
+ 
     
     const requestData = {
       model: "gpt-3.5-turbo",

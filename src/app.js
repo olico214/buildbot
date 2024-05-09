@@ -63,7 +63,7 @@ const main = async () => {
     handleCtx(async (bot, req, res) => {
       const {  number, message } = req.body;
       
-
+      console.log(req.body)
       await bot.sendMessage(number, message, {});
 
       res.setHeader("Content-Type", "application/json");

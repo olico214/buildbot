@@ -60,10 +60,10 @@ async function fecthResponse(phone) {
     const [result, fields] = await connection.query(sql, [phone, id]);
    console.log(result)
     if (result.length > 0) {
-      return true;
+      return false;
     }
     
-    return false;
+    return true;
   } catch (err) {
     console.error(err);
     return false;

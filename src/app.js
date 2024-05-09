@@ -61,15 +61,8 @@ const main = async () => {
   adapterProvider.server.post(
     "/v1/messages",
     handleCtx(async (bot, req, res) => {
-      const { token, number, message } = req.body;
-      if (
-        token !=
-        "12345"
-      ) {
-        res.setHeader("Content-Type", "application/json");
-        res.end(JSON.stringify({ status: "error", message: "token invalido" }));
-        return;
-      }
+      const {  number, message } = req.body;
+      
 
       await bot.sendMessage(number, message, {});
 

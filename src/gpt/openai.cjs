@@ -58,8 +58,8 @@ async function fecthResponse(phone, id) {
     const sql = `SELECT * FROM responseBot WHERE phone = ? AND iduser = ?`;
 
     const [result, fields] = await connection.query(sql, [phone, id]);
-   
-    if (result.length === 0) {
+   console.log(result)
+    if (result.length > 0) {
       return true;
     }
     

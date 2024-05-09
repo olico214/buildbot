@@ -51,7 +51,7 @@ async function fetchCtx(phone) {
 
 
 
-async function fecthResponse(phone, id) {
+async function fecthResponse(phone) {
   const connection = await pool.getConnection();
   
   try {

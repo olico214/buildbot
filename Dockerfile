@@ -8,20 +8,23 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@latest --activate
 ENV PNPM_HOME=/usr/local/bin
 
-# Copiar archivos de configuración
-COPY package*.json pnpm-lock.yaml ./
+# Copiar archivos de configuración primero para aprovechar la caché de Docker
+COPY package.json pnpm-lock.yaml ./
 
-# Verificar si node_modules existe, si no, instalar dependencias
-RUN apk add --no-cache --virtual .gyp python3 make g++ \
+# Instalar dependencias
+RUN apk add --no-cache --virtual .gyp \
+  python3 \
+  make \
+  g++ \
   && apk add --no-cache git \
-  && if [ ! -d "node_modules" ]; then pnpm install; fi \
+  && pnpm install \
   && apk del .gyp
 
-# Copiar los archivos del proyecto
+# Copiar el resto de los archivos del proyecto
 COPY . .
 
-# Instalar dependencias adicionales si es necesario
-RUN if [ ! -d "node_modules" ]; then pnpm install axios mysql2 dotenv; fi
+# Instalar dependencias adicionales (si no están ya instaladas)
+RUN pnpm add axios mysql2 dotenv
 
 # Etapa de despliegue
 FROM node:21-alpine3.18 as deploy
@@ -34,11 +37,12 @@ ARG PORT
 ENV PORT $PORT
 EXPOSE $PORT
 
-# Copiar archivos del constructor
+# Copiar archivos desde el constructor
 COPY --from=builder /app ./
+COPY --from=builder /app/package.json /app/pnpm-lock.yaml ./
 
 # Habilitar Corepack y preparar PNPM
-RUN corepack enable && corepack prepare pnpm@latest --activate 
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Limpiar caché de npm, instalar dependencias de producción y configurar usuario
 RUN npm cache clean --force && pnpm install --production --ignore-scripts \
@@ -46,8 +50,8 @@ RUN npm cache clean --force && pnpm install --production --ignore-scripts \
   && rm -rf $PNPM_HOME/.npm $PNPM_HOME/.node-gyp
 
 # Copiar y reemplazar los archivos necesarios antes de iniciar la aplicación
-COPY src/tmp-bot-dist/index.cjs node_modules/@builderbot/bot/dist/index.cjs
-COPY src/tmp-provider-baileys-dist/index.cjs node_modules/@builderbot/provider-baileys/dist/index.cjs
+COPY --from=builder /app/src/tmp-bot-dist/index.cjs node_modules/@builderbot/bot/dist/index.cjs
+COPY --from=builder /app/src/tmp-provider-baileys-dist/index.cjs node_modules/@builderbot/provider-baileys/dist/index.cjs
 
 # Comando para iniciar la aplicación
 CMD ["npm", "start"]

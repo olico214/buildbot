@@ -134,7 +134,7 @@ async function gpt(data) {
     
   } catch (error) {
     // console.error('Error sending message to OpenAI:', error);
-    return 'Lo siento, no puedo responder en este momento.';
+    return false;
   }
 }
 

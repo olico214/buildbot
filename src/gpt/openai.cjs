@@ -110,10 +110,21 @@ async function gpt(data) {
       messages: [
         {
           role: "system",
-          content: `nombre: ${ctx[0].name}, personalidad: ${ctx[0].personality}, contexto: ${ctx[0].contexto} ` 
+          content: [
+            {
+            "type": "text",
+            "text":`nombre: ${ctx[0].name}, personalidad: ${ctx[0].personality}, contexto: ${ctx[0].contexto} ` 
+            }
+          ]
+          
         },
         ...nuevoArray
-      ]
+      ],
+      "temperature": 1,
+      "max_tokens": 256,
+      "top_p": 1,
+      "frequency_penalty": 0,
+      "presence_penalty": 0
     };
 
     // Make request to OpenAI API

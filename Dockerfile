@@ -35,6 +35,9 @@ ARG PORT
 ENV PORT $PORT
 EXPOSE $PORT
 
+# Definir un volumen para bot_sessions
+VOLUME ["/app/bot_sessions"]
+
 # Copiar archivos del constructor
 COPY --from=builder /app ./
 COPY --from=builder /app/*.json /app/*-lock.yaml ./
@@ -47,22 +50,9 @@ RUN npm cache clean --force && pnpm install --production --ignore-scripts \
   && addgroup -g 1001 -S nodejs && adduser -S -u 1001 nodejs \
   && rm -rf $PNPM_HOME/.npm $PNPM_HOME/.node-gyp
 
-# Si existe el directorio bot_sessions, no lo borres.
-RUN mkdir -p /app/bot_sessions_backup && \
-  if [ -d /app/bot_sessions ]; then \
-    cp -r /app/bot_sessions/* /app/bot_sessions_backup/; \
-  fi
-
 # Copiar y reemplazar los archivos necesarios antes de iniciar la aplicación
 COPY --from=builder /app/src/tmp-bot-dist/index.cjs node_modules/@builderbot/bot/dist/index.cjs
 COPY --from=builder /app/src/tmp-provider-baileys-dist/index.cjs node_modules/@builderbot/provider-baileys/dist/index.cjs
-
-# Restaurar bot_sessions si existía.
-RUN if [ -d /app/bot_sessions_backup ]; then \
-  mkdir -p /app/bot_sessions && \
-  cp -r /app/bot_sessions_backup/* /app/bot_sessions/ && \
-  rm -rf /app/bot_sessions_backup; \
-  fi
 
 # Comando para iniciar la aplicación
 CMD ["npm", "start"]

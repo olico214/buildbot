@@ -11,9 +11,8 @@
   },
   "keywords": [],
   "dependencies": {
-    "@builderbot/bot": "1.1.4",
-    "@builderbot/provider-baileys": "1.1.4",
-    "@builderbot/database-mysql": "1.1.4"
+    "@builderbot/bot": "1.1.6",
+    "@builderbot/provider-baileys": "1.1.6"
   },
   "devDependencies": {
     "eslint-plugin-builderbot": "latest",

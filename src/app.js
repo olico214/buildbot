@@ -12,8 +12,6 @@ import { BaileysProvider as Provider } from "@builderbot/provider-baileys";
 import { EVENTS } from "@builderbot/bot";
 import { gpt } from "./gpt/openai.cjs";
 import {insertValues} from "./mysql/saveData.cjs"
-
-
 const PORT = process.env.PORT ?? 3008;
 
 

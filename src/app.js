@@ -22,6 +22,8 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
     const mensaje = ctx.body;
     await insertValues(mensaje,'user',ctx.from,'incoming')
 
+    
+
    // Actualizar el estado con los mensajes acumulados y la respuesta generada
    const data = { mensajes: mensaje, phone:ctx.from }
     

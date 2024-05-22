@@ -73,7 +73,29 @@ async function fecthResponse(phone) {
 }
 
 
+async function stopBot(phone) {
+  const connection = await pool.getConnection();
+  
+  try {
+    const sql = `insert into responseBot (phone,iduser,status)values(?,?,1)`;
+
+    const [result, fields] = await connection.query(sql, [phone, id]);
+   console.log(result)
+
+    return false;
+  } catch (err) {
+    console.error(err);
+    return false;
+  } finally {
+    connection.release();
+  }
+}
+
+
 async function gpt(data) {
+  
+
+
   const ctx = await getData()
 
 
@@ -82,10 +104,13 @@ async function gpt(data) {
   }
 
   const getstopped = await fecthResponse(data.phone)
-  
+  const mensaje = data.mensajes
   if(!getstopped){
     return false
-  }
+  }else if(mensaje.toLowerCase() === "asesor") {
+    await stopBot(data.phone);
+    return false;
+}
 
   const delay = ctx[0].delay; 
 

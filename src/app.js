@@ -62,7 +62,7 @@ const main = async () => {
     handleCtx(async (bot, req, res) => {
       const {  number, message } = req.body;
       
-      console.log(req.body)
+      
       await bot.sendMessage(number, message, {});
 
       res.setHeader("Content-Type", "application/json");
@@ -119,7 +119,7 @@ const main = async () => {
         let jsonData;
         try {
           jsonData = JSON.parse(data);
-          console.log(jsonData);
+         
           const response = jsonData.status
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ status: "success", message: response }));

@@ -58,7 +58,7 @@ async function fecthResponse(phone) {
     const sql = `SELECT * FROM responseBot WHERE phone = ? AND iduser = ?`;
 
     const [result, fields] = await connection.query(sql, [phone, id]);
-   console.log(result)
+   
     if (result.length > 0) {
       return false;
     }
@@ -80,7 +80,7 @@ async function stopBot(phone) {
     const sql = `insert into responseBot (phone,iduser,status)values(?,?,1)`;
 
     const [result, fields] = await connection.query(sql, [phone, id]);
-   console.log(result)
+   
 
     return false;
   } catch (err) {

@@ -6,7 +6,7 @@ const pool = require("../mysql/config.cjs");
 const id = process.env.id
 
 async function getData() {
-
+  console.log(id)
     const connection = await pool.getConnection();
     try {
         const sql = `select * from bot where userid =  ?`;

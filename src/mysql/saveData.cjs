@@ -1,5 +1,5 @@
 const pool = require("./config.cjs");
-const id = process.env.id
+const id = 1
 async function insertValues(message, role, phone,tipo) {
     const connection = await pool.getConnection();
     try {

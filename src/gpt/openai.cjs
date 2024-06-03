@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const axios = require('axios');
 const OPENAI_API_KEY = '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';
 const pool = require("../mysql/config.cjs");

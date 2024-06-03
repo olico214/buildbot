@@ -4,10 +4,10 @@ let pool;
 
 try {
   pool = mysql.createPool({
-    host: process.env.host,
-    user: process.env.user,
-    database: process.env.database,
-    password: process.env.password,
+    host: '193.203.166.182',
+    user: 'u408972741_notify',
+    database: 'u408972741_notify',
+    password: 'P$7CL>WVv3',
   });
 } catch (err) {
   console.error(err);

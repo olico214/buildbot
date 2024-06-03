@@ -21,7 +21,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
   async (ctx, { flowDynamic, state }) => {
     const mensaje = ctx.body;
     await insertValues(mensaje,'user',ctx.from,'incoming')
-
+console.log(mensaje)
     
 
    // Actualizar el estado con los mensajes acumulados y la respuesta generada
@@ -33,7 +33,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
       return
     }
 
-
+    console.log(respuesta)
     await insertValues(respuesta,'assistant',ctx.from,'ia')
 
     // Devolver la respuesta al flujo dinámico

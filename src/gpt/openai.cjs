@@ -129,7 +129,7 @@ async function gpt(data) {
   try {
 
  
-    
+    console.log(retrieveMessages)
     const requestData = {
       model: "gpt-3.5-turbo",
       messages: [

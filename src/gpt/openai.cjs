@@ -98,15 +98,15 @@ async function gpt(data) {
 
   const ctx = await getData()
 
-console.log(ctx)
+
   if(ctx[0].connected == 1){
     return false
   }
 
   const getstopped = await fecthResponse(data.phone)
-  console.log(getstopped)
+ 
   const mensaje = data.mensajes
-  console.log(mensaje)
+  
   if(!getstopped){
     return false
   }else if(mensaje.toLowerCase() === "asesor") {

@@ -28,7 +28,7 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
    const data = { mensajes: mensaje, phone:ctx.from }
     
     const respuesta = await gpt(data);
-    console.log(respuesta)
+   
     if (!respuesta){
       return
     }

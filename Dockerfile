@@ -3,6 +3,10 @@ FROM node:21-alpine3.18 as builder
 
 # Directorio de trabajo
 WORKDIR /app
+# Si existe el directorio bot_sessions, cópialo a un directorio temporal
+RUN if [ -d /app/bot_sessions ]; then \
+  cp -r /app/bot_sessions /tmp/bot_sessions_backup; \
+  fi
 
 # Habilitar Corepack y preparar PNPM
 RUN corepack enable && corepack prepare pnpm@latest --activate
@@ -47,10 +51,7 @@ RUN npm cache clean --force && pnpm install --production --ignore-scripts \
   && addgroup -g 1001 -S nodejs && adduser -S -u 1001 nodejs \
   && rm -rf $PNPM_HOME/.npm $PNPM_HOME/.node-gyp
 
-# Si existe el directorio bot_sessions, cópialo a un directorio temporal
-RUN if [ -d /app/bot_sessions ]; then \
-  cp -r /app/bot_sessions /tmp/bot_sessions_backup; \
-  fi
+
 
 # Copiar y reemplazar los archivos necesarios antes de iniciar la aplicación
 COPY --from=builder /app/src/tmp-bot-dist/index.cjs node_modules/@builderbot/bot/dist/index.cjs

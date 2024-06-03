@@ -1,39 +1,37 @@
-# Imagen base para la construcción
+# Imagen base
 FROM node:21-alpine3.18 as builder
 
-# Establecer el directorio de trabajo
+# Directorio de trabajo
 WORKDIR /app
 
-# Copiar solo los archivos necesarios para la instalación de dependencias
-COPY package*.json *-lock.yaml ./
-
-# Instalar dependencias de desarrollo
-RUN apk add --no-cache --virtual .build-deps \
-    python3 \
-    make \
-    g++ \
-  # Instalar Git
-  && apk add --no-cache git \
-  # Instalar Corepack y preparar PNPM
-  && npm install -g corepack \
-  && corepack enable && corepack prepare pnpm@latest --activate \
-  # Instalar dependencias
-  && pnpm install \
-  # Eliminar paquetes innecesarios
-  && apk del .build-deps
-
-# Copiar el resto de los archivos del proyecto
+# Copiar los archivos del proyecto
 COPY . .
+
+# Copiar los archivos de configuración y los archivos del proyecto
+COPY package*.json *-lock.yaml ./
 
 # Si existe el directorio bot_sessions, cópialo a un directorio temporal
 RUN if [ -d /app/bot_sessions ]; then \
   cp -r /app/bot_sessions /tmp/bot_sessions_backup; \
 fi
 
-# Etapa de construcción finalizada, iniciando etapa de despliegue
+# Habilitar Corepack y preparar PNPM
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Instalar dependencias
+RUN apk add --no-cache --virtual .gyp \
+  python3 \
+  make \
+  g++ \
+  && apk add --no-cache git \
+  && pnpm install \
+  && apk del .gyp \
+  && pnpm install axios mysql2 dotenv
+
+# Etapa de despliegue
 FROM node:21-alpine3.18 as deploy
 
-# Establecer el directorio de trabajo
+# Directorio de trabajo
 WORKDIR /app
 
 # Argumento de puerto
@@ -41,15 +39,16 @@ ARG PORT
 ENV PORT $PORT
 EXPOSE $PORT
 
-# Copiar solo los archivos necesarios para la ejecución
-COPY --from=builder /app/package*.json /app/bot_sessions ./
+# Copiar archivos del constructor y archivos de configuración
+COPY --from=builder /app ./
 
-# Instalar solo las dependencias de producción
-RUN npm install --production --ignore-scripts \
-  # Configurar usuario para ejecutar la aplicación
+# Habilitar Corepack y preparar PNPM
+RUN corepack enable && corepack prepare pnpm@latest --activate 
+
+# Limpiar caché de npm, instalar dependencias de producción y configurar usuario
+RUN pnpm install --production --ignore-scripts \
   && addgroup -g 1001 -S nodejs && adduser -S -u 1001 nodejs \
-  # Limpiar caché de npm y archivos innecesarios
-  && rm -rf $HOME/.npm $HOME/.node-gyp
+  && rm -rf $PNPM_HOME/.npm $PNPM_HOME/.node-gyp
 
 # Copiar y reemplazar los archivos necesarios antes de iniciar la aplicación
 COPY --from=builder /app/src/tmp-bot-dist/index.cjs node_modules/@builderbot/bot/dist/index.cjs

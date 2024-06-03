@@ -7,13 +7,13 @@ WORKDIR /app
 # Copiar los archivos del proyecto
 COPY . .
 
-# Copiar los archivos de configuración y los archivos del proyecto
-COPY package*.json *-lock.yaml ./
-
 # Si existe el directorio bot_sessions, cópialo a un directorio temporal
 RUN if [ -d /app/bot_sessions ]; then \
   cp -r /app/bot_sessions /tmp/bot_sessions_backup; \
 fi
+
+# Copiar los archivos de configuración y los archivos del proyecto
+COPY package*.json *-lock.yaml ./
 
 # Habilitar Corepack y preparar PNPM
 RUN corepack enable && corepack prepare pnpm@latest --activate

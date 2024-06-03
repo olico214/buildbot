@@ -21,14 +21,14 @@ const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
   async (ctx, { flowDynamic, state }) => {
     const mensaje = ctx.body;
     await insertValues(mensaje,'user',ctx.from,'incoming')
-console.log(mensaje)
+
     
 
    // Actualizar el estado con los mensajes acumulados y la respuesta generada
    const data = { mensajes: mensaje, phone:ctx.from }
     
     const respuesta = await gpt(data);
-
+    console.log(respuesta)
     if (!respuesta){
       return
     }

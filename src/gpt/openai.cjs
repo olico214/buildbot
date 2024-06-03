@@ -6,7 +6,7 @@ const pool = require("../mysql/config.cjs");
 const id = process.env.id
 
 async function getData() {
-  console.log(id)
+  
     const connection = await pool.getConnection();
     try {
         const sql = `select * from bot where userid =  ?`;
@@ -98,13 +98,15 @@ async function gpt(data) {
 
   const ctx = await getData()
 
-
+console.log(ctx)
   if(ctx[0].connected == 1){
     return false
   }
 
   const getstopped = await fecthResponse(data.phone)
+  console.log(getstopped)
   const mensaje = data.mensajes
+  console.log(mensaje)
   if(!getstopped){
     return false
   }else if(mensaje.toLowerCase() === "asesor") {
@@ -169,7 +171,7 @@ async function gpt(data) {
     return generatedMessage;
     
   } catch (error) {
-    // console.error('Error sending message to OpenAI:', error);
+    console.error('Error sending message to OpenAI:', error);
     return false;
   }
 }

@@ -1,7 +1,7 @@
 require('dotenv').config();
 const axios = require('axios');
 const pool = require("../mysql/config.cjs");
-const id = '1';
+const id = process.env.ID;
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 

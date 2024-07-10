@@ -5,7 +5,6 @@ import {
   createProvider,
   createFlow,
   addKeyword,
-  utils,
 } from "@builderbot/bot";
 import { MemoryDB as Database } from "@builderbot/bot";
 import { BaileysProvider as Provider } from "@builderbot/provider-baileys";
@@ -18,8 +17,9 @@ const PORT = process.env.PORT ?? 3001;
 
 const flowPrincipal = addKeyword(EVENTS.WELCOME).addAction(
   { capture: false },
-  async (ctx, { flowDynamic, state }) => {
+  async (ctx, { flowDynamic }) => {
     const mensaje = ctx.body;
+    
     await insertValues(mensaje,'user',ctx.from,'incoming')
 
     
@@ -95,7 +95,7 @@ const main = async () => {
     "/v1/status",
     handleCtx(async (bot, req, res) => {
       const { token } = req.body;
-      
+      console.log(token)
       if (
         token !==
         '12345'

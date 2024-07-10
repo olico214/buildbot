@@ -12,7 +12,7 @@ async function getData() {
         const [result] = await connection.query(sql, [id]);
         return result;
     } catch (err) {
-        console.log(err);
+        console.error(err);
         throw err;
     } finally {
         connection.release();
@@ -36,7 +36,7 @@ async function fetchCtx(phone) {
         const [result] = await connection.query(sql, [phone]);
         return result;
     } catch (err) {
-        console.log(err);
+        console.error(err);
         throw err;
     } finally {
         connection.release();
@@ -75,18 +75,18 @@ async function gpt(data) {
     try {
         const ctx = await getData();
 
-        if (ctx[0].connected == 1) {
+        if (ctx[0].connected === 1) {
             return false;
         }
 
-        const getstopped = await fetchResponse(data.phone);
+        const isStopped = await fetchResponse(data.phone);
 
-        if (!getstopped) {
+        if (!isStopped) {
             return false;
         }
 
-        const mensaje = data.mensajes;
-        if (mensaje.toLowerCase() === "asesor") {
+        const message = data.mensajes;
+        if (message.toLowerCase() === "asesor") {
             await stopBot(data.phone);
             return false;
         }
@@ -94,10 +94,10 @@ async function gpt(data) {
         const delay = ctx[0].delay;
         await new Promise(resolve => setTimeout(resolve, delay * 1000));
 
-        const retrieveMessages = await fetchCtx(data.phone);
-        const mensajes = retrieveMessages.map(mensaje => ({
-            role: mensaje.role,
-            content: mensaje.content
+        const retrievedMessages = await fetchCtx(data.phone);
+        const messages = retrievedMessages.map(msg => ({
+            role: msg.role,
+            content: msg.content
         }));
 
         const requestData = {
@@ -107,7 +107,7 @@ async function gpt(data) {
                     role: "system",
                     content: `nombre: ${ctx[0].name}, personalidad: ${ctx[0].personality}, contexto: ${ctx[0].contexto}`
                 },
-                ...mensajes
+                ...messages
             ],
             temperature: 1,
             max_tokens: 256,

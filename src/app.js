@@ -95,7 +95,7 @@ const main = async () => {
     "/v1/status",
     handleCtx(async (bot, req, res) => {
       const { token } = req.body;
-      console.log(token)
+    
       if (
         token !==
         '12345'
